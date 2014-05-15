@@ -1338,16 +1338,25 @@ void ofAppEGLWindow::destroyNativeUDev() {
 //------------------------------------------------------------
 void ofAppEGLWindow::setupNativeMouse() {
     struct dirent **eps;
-    int n = scandir("/dev/input/by-path/", &eps, filter_mouse, dummy_sort);
+    // an array of strings where different mouse devices might be
+    // an array of pointers to the filter functions
+    typedef int (*filter_ptr)(const struct dirent *d);
+    filter_ptr mouse_filters[2] = { mouse_filter, event_filter };
+    string devicePathBuffers[2] = { "/dev/input/by-path", "/dev/input" };
 
-    // make sure that we found an appropriate entry
-    if(n >= 0 && eps != 0 && eps[0] != 0) {
-        string devicePathBuffer;
-        devicePathBuffer.append("/dev/input/by-path/");
-        devicePathBuffer.append(eps[0]->d_name);
-        mouse_fd = open(devicePathBuffer.c_str(), O_RDONLY | O_NONBLOCK);
-        ofLogNotice("ofAppEGLWindow") << "setupMouse(): mouse_fd= " <<  mouse_fd << " devicePath=" << devicePathBuffer;
-    } else {
+
+    for(int i=0; i<2; i++){
+      int n = scandir(devicePathBuffers[i], &eps, input_filters[i], dummy_sort);
+
+      // make sure that we found an appropriate entry
+      if(n >= 0 && eps != 0 && eps[0] != 0) {
+          devicePathBuffer.append(devicePathBuffers[i]);
+          devicePathBuffer.append(eps[0]->d_name);
+          mouse_fd = open(devicePathBuffer.c_str(), O_RDONLY | O_NONBLOCK);
+          ofLogNotice("ofAppEGLWindow") << "setupMouse(): mouse_fd= " <<  mouse_fd << " devicePath=" << devicePathBuffer;
+      }
+    }
+    if(mouse_fd==0) {
         ofLogNotice("ofAppEGLWindow") << "setupMouse(): unabled to find mouse";
     }
 
