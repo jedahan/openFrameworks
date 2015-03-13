@@ -252,8 +252,6 @@ ifneq ($(PLATFORM_ARCH),armv6l)
     PLATFORM_LIBRARIES += pthread
 endif
     
-PLATFORM_LIBRARIES += freeimage
-
 #static libraries (fully qualified paths)
 PLATFORM_STATIC_LIBRARIES =
 PLATFORM_STATIC_LIBRARIES += $(OF_LIBS_PATH)/poco/lib/$(ABI_LIB_SUBPATH)/libPocoNetSSL.a
@@ -262,6 +260,7 @@ PLATFORM_STATIC_LIBRARIES += $(OF_LIBS_PATH)/poco/lib/$(ABI_LIB_SUBPATH)/libPoco
 PLATFORM_STATIC_LIBRARIES += $(OF_LIBS_PATH)/poco/lib/$(ABI_LIB_SUBPATH)/libPocoUtil.a
 PLATFORM_STATIC_LIBRARIES += $(OF_LIBS_PATH)/poco/lib/$(ABI_LIB_SUBPATH)/libPocoXML.a
 PLATFORM_STATIC_LIBRARIES += $(OF_LIBS_PATH)/poco/lib/$(ABI_LIB_SUBPATH)/libPocoFoundation.a
+PLATFORM_STATIC_LIBRARIES += $(OF_LIBS_PATH)/FreeImage/lib/$(ABI_LIB_SUBPATH)/freeimage.a
 
 # shared libraries 
 PLATFORM_SHARED_LIBRARIES =
