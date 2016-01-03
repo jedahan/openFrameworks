@@ -9,7 +9,7 @@ do
 		do
 			echo ">>$j"
 			cd $j
-			cp ../../../scripts/linux/template/linuxarmv6l/Makefile .
+			cp ../../../scripts/templates/linuxarmv6l/Makefile .
 			make clean
 			make
 			ret=$?
